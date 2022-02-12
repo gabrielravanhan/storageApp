@@ -9,32 +9,32 @@
 </ion-header>
 
 <ion-content>
-  <form>
+  <form [formGroup]="formCadastro">
     <ion-item>
       <ion-label position="floating">Nome</ion-label>
-      <ion-input></ion-input>
+      <ion-input formControlName="nome"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">CPF</ion-label>
-      <ion-input></ion-input>
+      <ion-input formControlName="'cpf"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">E-mail</ion-label>
-      <ion-input></ion-input>
+      <ion-input formControlName="'email"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Senha</ion-label>
-      <ion-input></ion-input>
+      <ion-input type="password" formArrayName="senha"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">Confirmar Senha</ion-label>
-      <ion-input></ion-input>
+      <ion-input type="password" formArrayName="confirmaSenha"></ion-input>
     </ion-item>
 
-    <ion-button expand="block">Salvar</ion-button>
+    <ion-button expand="block" (click)="salvarCadastro()">Salvar</ion-button>
   </form>
 </ion-content>
