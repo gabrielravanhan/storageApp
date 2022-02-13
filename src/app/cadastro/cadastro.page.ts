@@ -1,7 +1,10 @@
+import { StorageService } from './../services/storage.service';
+import { Usuario } from './../models/Usuario';
 import { comparaValidator } from './../validators/compara-validator';
 import { CpfValidator } from './../validators/cpf-validator';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastro',
@@ -11,6 +14,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class CadastroPage implements OnInit {
 
   formCadastro: FormGroup;
+  usuario: Usuario = new Usuario();
 
   mensagens = {
     nome: [
@@ -38,7 +42,7 @@ export class CadastroPage implements OnInit {
     ],
   };
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private storageService: StorageService, private route: Router) {
     this.formCadastro = this.formBuilder.group({
       nome: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
       cpf: ['', Validators.compose([Validators.required, CpfValidator.cpfValido])],
@@ -53,8 +57,17 @@ export class CadastroPage implements OnInit {
   ngOnInit() {
   }
 
-  salvarCadastro() {
-    console.log('Formulário: ', this.formCadastro.valid);
+  async salvarCadastro() {
+    if (this.formCadastro.valid) {
+      this.usuario.nome = this.formCadastro.value.nome;
+      this.usuario.cpf = this.formCadastro.value.cpf;
+      this.usuario.email = this.formCadastro.value.email;
+      this.usuario.senha = this.formCadastro.value.senha;
+      await this.storageService.set(this.usuario.email, this.usuario);
+      this.route.navigateByUrl('/home')
+    } else {
+      alert('Formulário Inválido');
+    }
   }
 
 }
